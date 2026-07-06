@@ -36,13 +36,13 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   #State management
-  flutter_bloc: ^8.1.2
+  flutter_bloc: ^9.1.1
 
   #comparing dart objects
   equatable: ^2.0.5
 
   #Service Locater
-  get_it: ^7.6.0
+  get_it: ^9.2.1
 
   #Date Format
   intl: ^0.18.1
