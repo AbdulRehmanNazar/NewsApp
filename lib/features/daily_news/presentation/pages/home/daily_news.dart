@@ -10,12 +10,13 @@ class DailyNews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppbar());
+    return Scaffold(appBar: _buildAppbar(), body: _buildBody());
   }
 
   _buildAppbar() {
     return AppBar(
       title: Text("Daily News"),
+      backgroundColor: Colors.deepOrange,
       toolbarTextStyle: TextStyle(color: Colors.black),
     );
   }
@@ -31,8 +32,17 @@ class DailyNews extends StatelessWidget {
         }
         if (state is RemoteArticlesDone) {
           return ListView.builder(
+
             itemBuilder: (context, index) {
-              return ListTile(title: Text('$index'));
+              final article = state.articles![index];
+
+              return ListTile(
+              leading: Image.network(article.urlToImage!,
+              width: 100,
+              height: 100,
+              ),
+              title: Text(article.title!),
+              );
             },
             itemCount: state.articles!.length,
           );

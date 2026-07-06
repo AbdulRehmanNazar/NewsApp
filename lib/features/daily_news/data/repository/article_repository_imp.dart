@@ -23,20 +23,26 @@ class ArticleRepositoryImp implements ArticleRepository {
       );
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess((httpResponse.data));
+        return DataSuccess(httpResponse.data.articles);
       } else {
         return DataFailed(
           DioException(
-                requestOptions: httpResponse.response.requestOptions,
-                error: httpResponse.response,
-                type: DioExceptionType.unknown,
-                message: httpResponse.response.statusMessage,
-              )
-              as List<ArticleModel>,
+            requestOptions: httpResponse.response.requestOptions,
+            error: httpResponse.response,
+            type: DioExceptionType.unknown,
+            message: httpResponse.response.statusMessage,
+          ),
         );
       }
     } on DioException catch (e) {
-      return DataFailed(e as List<ArticleModel>);
+      return DataFailed(
+        DioException(
+          requestOptions: RequestOptions(),
+          error: e.error,
+          type: DioExceptionType.unknown,
+          message: e.message,
+        ),
+      );
     }
   }
 }

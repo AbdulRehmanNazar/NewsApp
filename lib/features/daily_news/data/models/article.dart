@@ -1,26 +1,73 @@
 import 'package:news_app/features/daily_news/domain/entities/article.dart';
 
-class ArticleModel extends ArticleEntity {
-  const ArticleModel({
-    int? id,
-    String? author,
-    String? title,
-    String? description,
-    String? url,
-    String? urlToImage,
-    String? publishedAt,
-    String? content,
+
+class SourceModel {
+  final String? id;
+  final String? name;
+
+  const SourceModel({
+    this.id,
+    this.name,
   });
 
-  factory ArticleModel.fromJson(Map<String, dynamic> map) {
+  factory SourceModel.fromJson(Map<String, dynamic> json) {
+    return SourceModel(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+}
+
+class ArticleModel extends ArticleEntity {
+  final SourceModel? source;
+
+  const ArticleModel({
+    this.source,
+    super.id,
+    super.author,
+    super.title,
+    super.description,
+    super.url,
+    super.urlToImage,
+    super.publishedAt,
+    super.content,
+  });
+
+  factory ArticleModel.fromJson(Map<String, dynamic> json) {
     return ArticleModel(
-      author: map['author'] ?? "",
-      title: map['title'] ?? "",
-      description: map['description'] ?? "",
-      url: map['url'] ?? "",
-      urlToImage: map['urlToImage'] ?? "",
-      publishedAt: map['publishedAt'] ?? "",
-      content: map['content'] ?? "",
+      source: json['source'] != null
+          ? SourceModel.fromJson(json['source'])
+          : null,
+      author: json['author'] as String?,
+      title: json['title'] as String?,
+      description: json['description'] as String?,
+      url: json['url'] as String?,
+      urlToImage: json['urlToImage'] as String?,
+      publishedAt: json['publishedAt'] as String?,
+      content: json['content'] as String?,
+    );
+  }
+}
+
+class NewsResponseModel {
+  final String? status;
+  final int? totalResults;
+  final List<ArticleModel> articles;
+
+  const NewsResponseModel({
+    this.status,
+    this.totalResults,
+    required this.articles,
+  });
+
+  factory NewsResponseModel.fromJson(Map<String, dynamic> json) {
+    return NewsResponseModel(
+      status: json['status'] as String?,
+      totalResults: json['totalResults'] as int?,
+      articles: (json['articles'] as List<dynamic>?)
+          ?.map((e) => ArticleModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+          [],
     );
   }
 }
