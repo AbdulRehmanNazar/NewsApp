@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:news_app/features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
 import 'package:news_app/features/daily_news/presentation/bloc/article/remote/remote_article_state.dart';
 
@@ -10,7 +11,11 @@ class DailyNews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppbar(), body: _buildBody());
+
+    return Scaffold(
+      appBar: _buildAppbar(),
+      body: _buildBody(),
+    );
   }
 
   _buildAppbar() {
@@ -32,16 +37,24 @@ class DailyNews extends StatelessWidget {
         }
         if (state is RemoteArticlesDone) {
           return ListView.builder(
-
             itemBuilder: (context, index) {
               final article = state.articles![index];
 
               return ListTile(
-              leading: Image.network(article.urlToImage!,
-              width: 100,
-              height: 100,
-              ),
-              title: Text(article.title!),
+                leading: Image.network(
+                  article.urlToImage!,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.fill,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Icon(Icons.broken_image),
+                    );
+                  },
+                ),
+                title: Text(article.title!),
               );
             },
             itemCount: state.articles!.length,
