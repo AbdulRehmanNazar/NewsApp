@@ -18,10 +18,10 @@ class SourceModel {
   }
 }
 
-class ArticleModel extends ArticleEntity {
+class ArticleDTO extends ArticleEntity {
   final SourceModel? source;
 
-  const ArticleModel({
+  const ArticleDTO({
     this.source,
     super.id,
     super.author,
@@ -33,8 +33,8 @@ class ArticleModel extends ArticleEntity {
     super.content,
   });
 
-  factory ArticleModel.fromJson(Map<String, dynamic> json) {
-    return ArticleModel(
+  factory ArticleDTO.fromJson(Map<String, dynamic> json) {
+    return ArticleDTO(
       source: json['source'] != null
           ? SourceModel.fromJson(json['source'])
           : null,
@@ -52,7 +52,7 @@ class ArticleModel extends ArticleEntity {
 class NewsResponseModel {
   final String? status;
   final int? totalResults;
-  final List<ArticleModel> articles;
+  final List<ArticleDTO> articles;
 
   const NewsResponseModel({
     this.status,
@@ -65,7 +65,7 @@ class NewsResponseModel {
       status: json['status'] as String?,
       totalResults: json['totalResults'] as int?,
       articles: (json['articles'] as List<dynamic>?)
-          ?.map((e) => ArticleModel.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => ArticleDTO.fromJson(e as Map<String, dynamic>))
           .toList() ??
           [],
     );

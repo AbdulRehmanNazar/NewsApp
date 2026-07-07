@@ -6,8 +6,8 @@ import 'package:news_app/features/daily_news/presentation/bloc/article/remote/re
 import 'package:news_app/features/daily_news/presentation/bloc/article/remote/remote_article_event.dart';
 import 'package:news_app/features/daily_news/presentation/pages/home/daily_news.dart';
 
-void main() {
-  initializeDependencies();
+void main() async {
+  await initializeDependencies();
   runApp(const MyApp());
 }
 
